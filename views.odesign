@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="views" version="10.1.0.201507271600">
+  <ownedViewpoints name="views" modelFileExtension="views">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="Domain diagram" domainClass="views.DomainModel" enablePopupBars="true">
+      <defaultLayer name="Default">
+        <edgeMappings name="associationEdge" sourceMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetFinderExpression="[self.navigableEnd.type/]" sourceFinderExpression="[self.associationEnds -> excluding(self.navigableEnd) -> asSequence().type/]" domainClass="views.Association" useDomainElement="true">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <beginLabelStyleDescription showIcon="false" labelExpression="[self.associationEnds -> excluding(self.navigableEnd) -> asSequence().name + ' ' + '['+self.associationEnds -> excluding(self.navigableEnd) -> asSequence().lowerBound+'..'+ self.associationEnds -> excluding(self.navigableEnd) -> asSequence().upperBound+ ']'/]">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </beginLabelStyleDescription>
+            <centerLabelStyleDescription labelSize="9" showIcon="false" labelExpression="feature:name">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+            <endLabelStyleDescription showIcon="false" labelExpression="[self.navigableEnd.name + ' ' + '['+self.navigableEnd.lowerBound+'..'+ (if(self.navigableEnd.upperBound = -1) then '*' else self.navigableEnd.upperBound endif)+ ']'/]">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </endLabelStyleDescription>
+          </style>
+          <conditionnalStyles predicateExpression="feature:isComposition">
+            <style sourceArrow="FillDiamond" sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <beginLabelStyleDescription showIcon="false" labelExpression="[self.associationEnds -> excluding(self.navigableEnd) -> asSequence().name + ' ' + '['+self.associationEnds -> excluding(self.navigableEnd) -> asSequence().lowerBound+'..'+ self.associationEnds -> excluding(self.navigableEnd) -> asSequence().upperBound+ ']'/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </beginLabelStyleDescription>
+              <centerLabelStyleDescription showIcon="false" labelExpression="feature:name">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+              <endLabelStyleDescription showIcon="false" labelExpression="[self.navigableEnd.name + ' ' + '['+self.navigableEnd.lowerBound+'..'+ (if(self.navigableEnd.upperBound = -1) then '*' else self.navigableEnd.upperBound endif)+ ']'/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </endLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+        </edgeMappings>
+        <edgeMappings name="generalization" sourceMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetMapping="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" targetFinderExpression="feature:superClass">
+          <style targetArrow="InputClosedArrow" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="Class" domainClass="views.Class" childrenPresentation="List">
+          <subNodeMappings name="Property" semanticCandidatesExpression="feature:eAllContents" domainClass="views.Property">
+            <style xsi:type="style:SquareDescription" labelExpression="[(if (self.ancestors(Class).id -> first()) = self then '*' else '' endif) + self.name + ': ' + self.type.name + '['+self.lowerBound+'..'+ self.upperBound+ ']'/]" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EAttribute.gif" labelAlignment="LEFT" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_red']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EClass.gif" backgroundStyle="Liquid">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="DataType" label="Data Type" domainClass="views.DataType">
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EDataType.gif">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="Enumeration" domainClass="views.Enumeration" childrenPresentation="List">
+          <subNodeMappings name="EnumerationLiteral" semanticCandidatesExpression="feature:eContents" domainClass="views.EnumerationLiteral">
+            <style xsi:type="style:SquareDescription" labelExpression="['&lt;&lt;' + self.value + '>> ' + self.name/]" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EEnumLiteral.gif" labelPosition="node" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EEnum.gif">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
+          </style>
+        </containerMappings>
+        <toolSections label="Types">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="createClass" label="Class" containerMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EClass.gif">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Class" referenceName="classes">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['class'/]"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="createDataType" label="Data Type" containerMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='DataType']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EDataType.gif">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.DataType" referenceName="dataTypes">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['dataType'/]"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="createEnumeration" label="Enumeration" containerMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Enumeration']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EEnum.gif">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:container">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Enumeration" referenceName="enumerations">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['enumeration'/]"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="createFeatures" label="Features">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="createProperty" label="Property" nodeMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Class']/@subNodeMappings[name='Property']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EAttribute.gif">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation/>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="createEnumerationLiteral" label="Enumeration Literal" nodeMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@containerMappings[name='Enumeration']/@subNodeMappings[name='EnumerationLiteral']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EEnumLiteral.gif">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation/>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="createRelationships" label="Relationships">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="createGeneralization" label="Generalization" edgeMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@edgeMappings[name='generalization']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EGenericSuperType.gif">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="createAssociation" label="Association" edgeMappings="//@ownedViewpoints[name='views']/@ownedRepresentations[name='Domain%20diagram']/@defaultLayer/@edgeMappings[name='associationEdge']" iconPath="/org.eclipse.emf.ecore.edit/icons/full/obj16/EReference.gif">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer()/]">
+                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Association" referenceName="associations">
+                    <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="var:name"/>
+                    <subModelOperations xsi:type="tool_1:SetValue" featureName="isComposition"/>
+                    <subModelOperations xsi:type="tool_1:CreateInstance" typeName="views.Property" referenceName="properties">
+                      <subModelOperations xsi:type="tool_1:SetValue" featureName="Lower Bound"/>
+                      <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="var:name"/>
+                      <subModelOperations xsi:type="tool_1:SetValue" featureName="Upper Bound"/>
+                      <subModelOperations xsi:type="tool_1:SetValue" featureName="Type" valueExpression="var:source"/>
+                    </subModelOperations>
+                  </subModelOperations>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </defaultLayer>
+    </ownedRepresentations>
+  </ownedViewpoints>
+</description:Group>
