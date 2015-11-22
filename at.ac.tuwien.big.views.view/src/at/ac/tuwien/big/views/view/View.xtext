@@ -6,15 +6,12 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 // implement your grammar here, starting with the root element: ViewModel
 
 ViewModel returns ViewModel:
-	(viewGroups+=ViewGroup)+
+	(viewGroups+=ViewGroup (viewGroups+=ViewGroup)*)?
 ;
 
 ViewGroup returns ViewGroup:
-	welcomeViewGroup?=('welcome')
-	'viewgroup'
-	name=QualifiedName
-	'{'
-	(views+=View)+
+	(welcomeViewGroup?='welcome')? 'viewgroup' name=QualifiedName '{'
+	(views+=View(',' views+=View)*)?
 	'}'
 ;
 
@@ -23,49 +20,150 @@ View returns View:
 ;
 
 ClassIndexView returns ClassIndexView:
-	startView?=('start')
-	'index-view'
-	name=QualifiedName
-	header=(Header)
-	'handles'
-	class=[Class|EString]
-	'{'
-	description=(Description)?
+	(startView?='start')? 'index-view' name=QualifiedName
+	header=STRING 'handles' class=[Class|QualifiedName] '{'
+	('view-description' description=STRING)?
+	(link+=Link(',' link+=Link)*)?
 	'}'
 ;
 
-Class returns Class:
-	name=QualifiedName
-;
-
-Header:
-	EString
-;
-
-Description:
-	'view-description' EString
+Link returns Link:
+	'link' label=STRING 'handles' targetView=[ClassOperationView|QualifiedName]
 ;
 
 ClassOperationView returns ClassOperationView:
-	CreateView
+	(CreateView | ReadView | UpdateView | DeleteView)
 ;
 	
 CreateView returns CreateView:
-	layout=Layout
-	startView?=('start')
-	'create-view'
-	name=QualifiedName
-	header=(Header)
-	'handles'
-	class=[Class|EString]
-	'{'
-	description=(Description)?
+	layout=Layout (startView?='start')? 'create-view' name=QualifiedName
+	header=STRING 'handles' class=[Class|QualifiedName] '{'
+	('view-description' description=STRING)?
+	(elementGroups+=ElementGroup(',' elementGroups+=ElementGroup)*)?
 	'}'
-	(elementGroups+=ElementGroup)+
+;
+
+ReadView returns ReadView:
+	layout=Layout (startView?='start')? 'read-view' name=QualifiedName
+	header=STRING 'handles' class=[Class|QualifiedName] '{'
+	('view-description' description=STRING)?
+	(elementGroups+=ElementGroup(',' elementGroups+=ElementGroup)*)?
+	'}'
+;
+
+UpdateView returns UpdateView:
+	layout=Layout (startView?='start')? 'update-view' name=QualifiedName
+	header=STRING 'handles' class=[Class|QualifiedName] '{'
+	('view-description' description=STRING)?
+	(elementGroups+=ElementGroup(',' elementGroups+=ElementGroup)*)?
+	'}'
+;
+
+DeleteView returns DeleteView:
+	layout=Layout (startView?='start')? 'delete-view' name=QualifiedName
+	header=STRING 'handles' class=[Class|QualifiedName] '{'
+	('view-description' description=STRING)?
+	(elementGroups+=ElementGroup(',' elementGroups+=ElementGroup)*)?
+	'}'
 ;
 
 ElementGroup returns ElementGroup:
-	header=Header
+	layout=Layout 'elementgroup' header=STRING '{'
+	(viewElements+=ViewElement(',' viewElements+=ViewElement)*)?
+	'}'
+	('with' condition=Condition)?
+;
+
+Condition returns Condition:
+	(ComparisonCondition | CompositeCondition)
+;
+
+VisibilityCondition returns VisibilityCondition:
+	(ComparisonCondition | CompositeCondition)
+;
+
+ComparisonCondition returns ComparisonCondition:
+	'comparison-condition' conditionID=QualifiedName ':'
+	property=[PropertyElement|QualifiedName]
+	comparisonType=ComparisonConditionType comparisonValue=STRING '?'
+	type=VisibilityConditionType
+;
+
+CompositeCondition returns CompositeCondition:
+	'composite-condition' conditionID=QualifiedName ':'
+	'(' composedConditions+=VisibilityCondition
+	compositionType=CompositeConditionType
+	composedConditions+=VisibilityCondition
+	')' '?' type=VisibilityConditionType
+;
+
+ViewElement returns ViewElement:
+	(List | Table | Column | Text | DateTimePicker | Selection)
+;
+
+AssociationElement returns AssociationElement:
+	(List | Table)
+;
+
+List returns List:
+	'list' elementID=ID label=STRING
+	'handles' association=[Association|QualifiedName] '{'
+	(link+=Link(',' link+=Link)*)?
+	'}'
+	('with' condition=Condition)?
+;
+
+Table returns Table:
+	'table' elementID=QualifiedName label=STRING
+	'handles' association=[Association|QualifiedName] '{'
+	(link+=Link(',' link+=Link)*)?(',')?
+	(columns+=Column(',' columns+=Column)*)?
+	'}'
+	('with' condition=Condition)?
+;
+
+PropertyElement returns PropertyElement:
+	(Column | Text | DateTimePicker | Selection)
+;
+
+Column returns Column:
+	'column' elementID=QualifiedName label=STRING
+	'handles' property=[Property|QualifiedName]
+	('with' condition=Condition)?
+;
+
+Text returns Text:
+	(long?='long')? 'text' elementID=QualifiedName label=STRING
+	('format' format=STRING)?
+	'handles' property=[Property|QualifiedName]
+	('with' condition=Condition)?
+;
+
+DateTimePicker returns DateTimePicker:
+	'date-time-picker' elementID=QualifiedName label=STRING
+	('format' format=STRING)?
+	'handles' property=[Property|QualifiedName]
+	('with' condition=Condition)?
+;
+
+Selection returns Selection:
+	'selection' elementID=QualifiedName label=STRING
+	'handles' property=[Property|QualifiedName] '{'
+	(selectionItems+=SelectionItem (',' selectionItems+=SelectionItem)*)?
+	'}'
+	('with' condition=Condition)?
+;
+
+SelectionItem returns SelectionItem:
+	SelectionItem_Impl | EnumerationLiteralItem
+;
+
+SelectionItem_Impl returns SelectionItem:
+	'selection-item' value=STRING
+;
+
+EnumerationLiteralItem returns EnumerationLiteralItem:
+	'enum-literal' value=STRING 'handles' enumerationLiteral=[EnumerationLiteral|QualifiedName]
 ;
 
 Layout returns Layout:
@@ -76,13 +174,20 @@ enum LayoutStyle returns LayoutStyle:
 	Vertical = 'vertical'| Horizontal = 'horizontal'
 ;
 
+enum VisibilityConditionType returns VisibilityConditionType:
+	Hide = 'Hide' | Show = 'Show' | Enable = 'Enable' | Disable = 'Disable'
+;
+
+enum ComparisonConditionType returns ComparisonConditionType:
+	Equal = '==' | Less = '<' | Greater = '>'
+;
+
+enum CompositeConditionType returns CompositeConditionType:
+	And = '&&' | Or = '||'
+;
 
 EInt returns ecore::EInt:
 	'-'? INT;
-	
-EString returns ecore::EString:
-	STRING | ID
-;
 
 QualifiedName returns ecore::EString: 
 	ID (=> '.'ID)*;
